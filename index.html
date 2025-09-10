@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loja Exemplo</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body { 
+      margin: 0; 
+      font-family: Arial, sans-serif; 
+      background-color: #f0f0f0; 
+    }
+
+    header { 
+      background-image: url(imagens/projeto.jpg.jpg); 
+      background-size: cover;
+      background-position: center;
+      color: white; 
+      padding: 20px; 
+      text-align: center; 
+    }
+
+    .container { 
+      max-width: 1200px; 
+      margin: 30px auto; 
+      padding: 0 20px; 
+      display: flex; 
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .product { 
+      background-color: white; 
+      border-radius: 10px; 
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+      width: 250px; 
+      padding: 15px; 
+      text-align: center; 
+      flex: 1 1 250px;
+    }
+
+    .product img { 
+      width: 100%; 
+      height: 180px; 
+      object-fit: cover; 
+      border-radius: 5px; 
+    }
+
+    .product h3 { 
+      margin: 15px 0 10px; 
+      font-size: 1.1em; 
+      color: #333; 
+    }
+
+    .product p { 
+      font-size: 1em; 
+      color: #666; 
+    }
+
+    .price { 
+      font-weight: bold; 
+      font-size: 1.2em; 
+      color: #000; 
+      margin-top: 10px; 
+    }
+
+    .sidebar { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 180px; 
+      background-color: #020202; 
+      padding: 25px 20px; 
+      height: 100%; 
+      box-shadow: 2px 0 8px rgba(0,0,0,0.05); 
+    }
+
+    .sidebar a { 
+      display: block; 
+      background-color: #b9b8b8; 
+      border-radius: 8px; 
+      color: #2c3e50; 
+      font-weight: bold; 
+      text-decoration: none; 
+      padding: 12px; 
+      margin-bottom: 15px; 
+      text-align: center; 
+      transition: 0.2s; 
+    }
+
+    .sidebar a:hover { 
+      background-color: #eafaf1; 
+      color: #2ecc71; 
+    }
+
+    .categoria { 
+      margin-left: 220px; 
+      margin-bottom: 40px; 
+    }
+
+    .categoria h2 { 
+      font-size: 1.6em; 
+      color: #2c3e50; 
+      margin-bottom: 15px; 
+      border-left: 5px solid #2ecc71; 
+      padding-left: 10px; 
+    }
+
+    .produtos { 
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 20px; 
+    }
+
+    .rodape { 
+      text-align: center; 
+      color: black; 
+      padding: 20px; 
+      margin-top: 30px; 
+    }
+
+    .add-to-cart { 
+      background-color: #2ecc71; 
+      color: white; 
+      border: none; 
+      border-radius: 5px; 
+      padding: 10px 15px; 
+      cursor: pointer; 
+      transition: background-color 0.3s; 
+    }
+
+    .add-to-cart:hover { 
+      background-color: #27ae60; 
+      transform: scale(1.02); 
+    }
+
+    .cart-badge { 
+      background:#2ecc71; 
+      color:#fff; 
+      padding:4px 8px; 
+      border-radius:12px; 
+      margin-left:8px; 
+      font-weight:bold; 
+      font-size:0.9rem; 
+    }
+
+    /* Perfil do usuário logado na sidebar */
+    .user-card {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: #1c1c1c;
+      color: #fff;
+      padding: 10px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      cursor: pointer;
+    }
+
+    .user-card img {
+      width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+    }
+
+    .user-card .name { font-weight: 700; line-height: 1.1; }
+    .user-card .hello { font-size: .8rem; color: #bbb; margin-top: 2px; }
+    #logout-link { display: none; }
+
+    /* ====== RESPONSIVIDADE ====== */
+    @media (max-width: 1024px) {
+      .categoria { margin-left: 200px; }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+      .sidebar a {
+        flex: 1 1 auto;
+        margin: 5px;
+      }
+      .categoria { margin-left: 0; margin-top: 20px; }
+      .produtos { justify-content: center; }
+      .product { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Perfumaria Ferrari</h1>
+  </header>
+
+  <div class="sidebar">
+    <!-- Perfil do usuário -->
+    <div id="user-card" class="user-card">
+      <img id="user-avatar" src="imagens/avatar.png" alt="Foto do usuário">
+      <div>
+        <div id="user-name" class="name">Usuário</div>
+        <div class="hello">Bem-vindo(a)</div>
+      </div>
+    </div>
+
+    <!-- Links -->
+    <a href="login.html" id="login-link">Login</a>
+    <a href="#" id="logout-link">Sair</a>
+    <a href="sobrealoja.html">Sobre nossa Loja</a>
+    <a href="contato.html">Contato</a>
+    <a href="carrinho.html">Carrinho <span id="cart-count" class="cart-badge">0</span></a>
+  </div>
+
+  <div class="container">
+    <!-- ===== SEÇÕES DE PRODUTOS ===== -->
+    <!-- (mantive todos seus produtos iguais, não removi nada) -->
+    <!-- Masculinos -->
+    <section class="categoria">
+      <h2>Produtos Masculinos</h2>
+      <div class="produtos">
+        <div class="product">
+          <img src="imagens/kaiak o2.jpg" alt="Kaiak o2 - Natura" />
+          <h3>Kaiak o2 - Natura</h3>
+          <p>Sinta o frescor do oxigênio que vem do mar.</p>
+          <div class="price">R$ 185,89</div>
+          <button class="add-to-cart" data-nome="Kaiak o2 - Natura" data-preco="185.89" data-img="imagens/kaiak o2.jpg">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product">
+          <img src="imagens/essencial unuco.jpg" alt="Essencial unico - Natura" />
+          <h3>Essencial unico - Natura</h3>
+          <p>Um perfume muito elegante e muito bem trabalhado.</p>
+          <div class="price">R$ 299,89</div>
+          <button class="add-to-cart" data-nome="Essencial unico - Natura" data-preco="299.89" data-img="imagens/essencial unuco.jpg">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product">
+          <img src="imagens/homem neo.jpg" alt="Homem Neo - natura" />
+          <h3>Homem Neo - natura</h3>
+          <p>O homem neo tem uma pegada bem jovem, e é extremamente forte.</p>
+          <div class="price">R$ 204,89</div>
+          <button class="add-to-cart" data-nome="Homem Neo - natura" data-preco="204.89" data-img="imagens/homem neo.jpg">Adicionar ao Carrinho</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Femininos -->
+    <section class="categoria">
+      <h2>Produtos Femininos</h2>
+      <div class="produtos">
+        <div class="product">
+          <img src="imagens/biografia.jpg" alt="Biografia - Natura" />
+          <h3>Biografia - Natura</h3>
+          <p>Elegância e sofisticação</p>
+          <div class="price">R$ 185,89</div>
+          <button class="add-to-cart" data-nome="Biografia - Natura" data-preco="185.89" data-img="imagens/biografia.jpg">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product">
+          <img src="imagens/essencial.jpg" alt="Essencial exclusivo floral - Natura" />
+          <h3>Essencial exclusivo floral - Natura</h3>
+          <p>Floral cítrico cremoso.</p>
+          <div class="price">R$ 254,89</div>
+          <button class="add-to-cart" data-nome="Essencial exclusivo floral - Natura" data-preco="254.89" data-img="imagens/essencial.jpg">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product">
+          <img src="imagens/una senses.jpg" alt="Una senses- Natura" />
+          <h3>Una senses- Natura</h3>
+          <p>Fragrância conhecida por seu toque exótico e suas notas intensas</p>
+          <div class="price">R$ 318,99</div>
+          <button class="add-to-cart" data-nome="Una senses- Natura" data-preco="318.99" data-img="imagens/una senses.jpg">Adicionar ao Carrinho</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Infantil -->
+    <section class="categoria">
+      <h2>Produtos Infantil</h2>
+      <div class="produtos">
+        <div class="product">
+          <img src="imagens/avon avengers.jpg" alt="Avengers - Avon" />
+          <h3>Avengers - Avon</h3>
+          <p>Notas frescas e energéticas, com toques cítricos ou amadeirados.</p>
+          <div class="price">R$ 32,99</div>
+          <button class="add-to-cart" data-nome="Avengers - Avon" data-preco="32.99" data-img="imagens/avon avengers.jpg">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product">
+          <img src="imagens/avon princess.jpg" alt="Princess - avon" />
+          <h3>Princess - avon</h3>
+          <p>Notas de maçã, lírio do vale e âmbar.</p>
+          <div class="price">R$ 18,99</div>
+          <button class="add-to-cart" data-nome="Princess - avon" data-preco="18.99" data-img="imagens/avon princess.jpg">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product">
+          <img src="imagens/mamae bebe.jpg" alt="Mamãe Bebê - Natura" />
+          <h3>Mamãe Bebê - Natura</h3>
+          <p>É conforto, é se sentir bem, é lembranças.</p>
+          <div class="price">R$ 98,89</div>
+          <button class="add-to-cart" data-nome="Mamãe Bebê - Natura" data-preco="98.89" data-img="imagens/mamae bebe.jpg">Adicionar ao Carrinho</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="rodape">
+    <p>&copy; 2025 Perfumaria Ferrari — Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    /* ====== Carrinho e Botões ====== */
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+    function salvarCarrinho() {
+      localStorage.setItem("carrinho", JSON.stringify(carrinho));
+      atualizarContador();
+    }
+
+    function atualizarContador() {
+      const total = carrinho.reduce((s, p) => s + (p.quantidade || 0), 0);
+      const el = document.getElementById("cart-count");
+      if (el) el.textContent = total;
+    }
+
+    document.querySelectorAll(".add-to-cart").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const usuario = JSON.parse(localStorage.getItem("usuario"));
+        if (!usuario || !usuario.nome) {
+          alert("Você precisa estar logado para adicionar produtos ao carrinho!");
+          window.location.href = "login.html";
+          return;
+        }
+
+        const nome = btn.dataset.nome;
+        const preco = parseFloat(btn.dataset.preco);
+        const img = btn.dataset.img;
+
+        const existente = carrinho.find(p => p.nome === nome);
+        if (existente) existente.quantidade = (existente.quantidade || 0) + 1;
+        else carrinho.push({ nome, preco, img, quantidade: 1 });
+
+        salvarCarrinho();
+
+        const original = btn.innerText;
+        btn.innerText = "✔ Adicionado";
+        setTimeout(() => btn.innerText = original, 800);
+      });
+    });
+
+    /* ====== Perfil do usuário logado ====== */
+    const userCard   = document.getElementById("user-card");
+    const userNameEl = document.getElementById("user-name");
+    const userAvatar = document.getElementById("user-avatar");
+    const loginLink  = document.getElementById("login-link");
+    const logoutLink = document.getElementById("logout-link");
+
+    function renderUsuario() {
+      const usuario = JSON.parse(localStorage.getItem("usuario"));
+      if (usuario && usuario.nome) {
+        userNameEl.textContent = usuario.nome;
+        userAvatar.src = usuario.foto || "imagens/avatar.png";
+        userCard.style.display = "flex";
+        loginLink.style.display = "none";
+        logoutLink.style.display = "block";
+      } else {
+        userCard.style.display = "none";
+        loginLink.style.display = "block";
+        logoutLink.style.display = "none";
+      }
+    }
+
+    logoutLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.removeItem("usuario");
+      renderUsuario();
+    });
+
+    // Redireciona para a página de perfil ao clicar na foto ou nome
+    userCard.addEventListener("click", () => {
+      const usuario = JSON.parse(localStorage.getItem("usuario"));
+      if (usuario && usuario.nome) {
+        window.location.href = "perfil.html";
+      }
+    });
+
+    atualizarContador();
+    renderUsuario();
+  </script>
+</body>
+</html>

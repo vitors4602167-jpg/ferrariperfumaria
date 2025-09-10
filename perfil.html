@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minha Conta - Perfumaria Ferrari</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(120deg, #f6f9fc, #e0f7fa);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 50px;
+    margin: 0;
+  }
+  .container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 380px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    position: relative;
+  }
+  .foto-wrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  #foto-user {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    object-fit: cover;
+    border: 3px solid #2ecc71;
+    transition: 0.3s;
+  }
+  #foto-user:hover {
+    opacity: 0.8;
+  }
+  .edit-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #2ecc71;
+    color: #fff;
+    border-radius: 50%;
+    padding: 6px;
+    font-size: 16px;
+    border: 2px solid #fff;
+  }
+  h2 {
+    color: #2ecc71;
+    margin-bottom: 5px;
+  }
+  p {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+  }
+  .info-box {
+    text-align: left;
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  .info-box p {
+    margin: 8px 0;
+    font-weight: bold;
+    color: #555;
+    word-wrap: break-word;
+  }
+  input[type="file"] {
+    display: none;
+  }
+  input[type="password"] {
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 100%;
+  }
+  button {
+    padding: 12px 20px;
+    background: #2ecc71;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.3s;
+    margin: 5px;
+  }
+  button:hover {
+    background: #27ae60;
+  }
+  .hidden {
+    display: none;
+  }
+  .mensagem {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: red;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <label for="foto-cad" class="foto-wrapper">
+      <img id="foto-user" src="imagens/avatar.png" alt="Foto do usuário" title="Clique para alterar foto">
+      <span class="edit-icon">🖉</span>
+    </label>
+    <input type="file" id="foto-cad" accept="image/*">
+
+    <h2 id="nome-user">Usuário</h2>
+    <p>Bem-vindo(a) ao seu perfil!</p>
+
+    <div class="info-box">
+        <p>Nome de usuário: <span id="nome-usuario-box">Usuário</span></p>
+        <p>Gmail: <span id="gmail-user">email@gmail.com</span></p>
+    </div>
+
+    <!-- Botão e formulário de alterar senha -->
+    <button id="btn-alterar-senha">Alterar Senha</button>
+    <div id="form-senha" class="hidden">
+        <input type="password" id="senha-atual" placeholder="Senha atual">
+        <input type="password" id="nova-senha" placeholder="Nova senha">
+        <input type="password" id="confirma-senha" placeholder="Confirmar nova senha">
+        <button id="salvar-senha">Salvar Nova Senha</button>
+        <p class="mensagem" id="mensagem-senha"></p>
+    </div>
+
+    <button id="btn-loja">Voltar para a Loja</button>
+    <button id="btn-sair">Sair Da Conta</button>
+</div>
+
+<script>
+const usuario = JSON.parse(localStorage.getItem('usuario')) || null;
+
+// Verifica se usuário está logado
+if(!usuario){
+    alert('Você precisa estar logado!');
+    window.location.href = 'login.html';
+} else {
+    document.getElementById('nome-user').textContent = usuario.nome;
+    document.getElementById('nome-usuario-box').textContent = usuario.nome;
+    document.getElementById('gmail-user').textContent = usuario.gmail || 'Não informado';
+    document.getElementById('foto-user').src = usuario.foto || 'imagens/avatar.png';
+}
+
+// Logout
+document.getElementById('btn-sair').addEventListener('click', () => {
+    localStorage.removeItem('usuario');
+    localStorage.removeItem('usuarioLogado');
+    window.location.href = 'login.html';
+});
+
+// Voltar para a loja
+document.getElementById('btn-loja').addEventListener('click', () => {
+    window.location.href = 'index.html';
+});
+
+// Alterar foto
+document.getElementById('foto-cad').addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if(file){
+        const reader = new FileReader();
+        reader.onload = () => {
+            const novaFoto = reader.result;
+            document.getElementById('foto-user').src = novaFoto;
+
+            usuario.foto = novaFoto;
+            localStorage.setItem('usuario', JSON.stringify(usuario));
+            localStorage.setItem('usuario_' + usuario.nome, JSON.stringify(usuario));
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Mostrar/ocultar formulário de senha
+document.getElementById('btn-alterar-senha').addEventListener('click', () => {
+    document.getElementById('form-senha').classList.toggle('hidden');
+});
+
+// Salvar nova senha
+document.getElementById('salvar-senha').addEventListener('click', () => {
+    const senhaAtual = document.getElementById('senha-atual').value;
+    const novaSenha = document.getElementById('nova-senha').value;
+    const confirmaSenha = document.getElementById('confirma-senha').value;
+    const msg = document.getElementById('mensagem-senha');
+
+    if(senhaAtual !== usuario.senha){
+        msg.style.color = 'red';
+        msg.textContent = "Senha atual incorreta!";
+        return;
+    }
+    if(novaSenha.length < 4){
+        msg.style.color = 'red';
+        msg.textContent = "A nova senha deve ter pelo menos 4 caracteres.";
+        return;
+    }
+    if(novaSenha !== confirmaSenha){
+        msg.style.color = 'red';
+        msg.textContent = "As senhas não coincidem!";
+        return;
+    }
+
+    usuario.senha = novaSenha;
+    localStorage.setItem('usuario', JSON.stringify(usuario));
+    localStorage.setItem('usuario_' + usuario.nome, JSON.stringify(usuario));
+
+    msg.style.color = 'green';
+    msg.textContent = "Senha alterada com sucesso!";
+    document.getElementById('senha-atual').value = "";
+    document.getElementById('nova-senha').value = "";
+    document.getElementById('confirma-senha').value = "";
+});
+</script>
+
+</body>
+</html>

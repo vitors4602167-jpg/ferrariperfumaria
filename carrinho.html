@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carrinho - Perfumaria Ferrari</title>
+  <style>
+    body { margin:0; font-family: Arial, sans-serif; background:#f0fdf4; color:#1b4332; }
+    nav { display:flex; justify-content:space-between; align-items:center; background:#2d6a4f; color:#fff; padding:1rem 2rem; }
+    nav a{ color:#fff; text-decoration:none; margin-left:1rem; font-weight:bold; }
+    .container{ max-width:1000px; margin:30px auto; background:#fff; padding:20px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.08); }
+    h2{ color:#2d6a4f; text-align:center; margin-top:0; }
+    table{ width:100%; border-collapse:collapse; }
+    th,td{ padding:12px; text-align:center; border-bottom:1px solid #eee; }
+    th{ background:#95d5b2; color:#1b4332; }
+    img{ width:70px; height:70px; object-fit:cover; border-radius:6px; }
+    .btn{ padding:6px 10px; border:none; border-radius:6px; cursor:pointer; font-weight:bold; }
+    .btn-plus{ background:#2d6a4f; color:#fff; }
+    .btn-minus{ background:#95d5b2; color:#1b4332; }
+    .total{ text-align:right; font-size:1.25rem; font-weight:bold; color:#2d6a4f; margin-top:12px; }
+    .acoes{ display:flex; justify-content:space-between; margin-top:18px; }
+    .acoes button{ padding:10px 16px; border-radius:8px; border:none; cursor:pointer; font-weight:bold; }
+    .limpar{ background:#e5f5ea; color:#1b4332; border:1px solid #cde6d1; }
+    .finalizar{ background:#2d6a4f; color:#fff; }
+    .empty{ padding:40px; text-align:center; color:#555; }
+  </style>
+</head>
+<body>
+  <nav>
+    <div><strong>Perfumaria Ferrari</strong></div>
+    <div><a href="index.html">Voltar às compras</a></div>
+  </nav>
+
+  <div class="container">
+    <h2>🛒 Seu Carrinho</h2>
+    <div id="cart-area"></div>
+    <div class="total" id="total">Total: R$ 0,00</div>
+    <div class="acoes">
+      <button class="limpar" onclick="limparCarrinho()">Limpar Carrinho</button>
+      <button class="finalizar" onclick="finalizarCompra()">Finalizar Compra</button>
+    </div>
+  </div>
+
+  <script>
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+    function salvar() {
+      localStorage.setItem("carrinho", JSON.stringify(carrinho));
+    }
+
+    function render() {
+      const area = document.getElementById("cart-area");
+      area.innerHTML = "";
+      if (!carrinho || carrinho.length === 0) {
+        area.innerHTML = '<div class="empty">Seu carrinho está vazio. Volte às compras!</div>';
+        document.getElementById("total").innerText = "Total: R$ 0,00";
+        return;
+      }
+
+      let total = 0;
+      let html = `<table>
+        <thead><tr><th>Produto</th><th>Imagem</th><th>Preço</th><th>Quantidade</th><th>Subtotal</th><th>Ações</th></tr></thead><tbody>`;
+
+      carrinho.forEach((it, idx) => {
+        const subtotal = it.preco * it.quantidade;
+        total += subtotal;
+        html += `<tr>
+          <td style="text-align:left">${it.nome}</td>
+          <td><img src="${it.img}" alt="${it.nome}"></td>
+          <td>R$ ${it.preco.toFixed(2)}</td>
+          <td>${it.quantidade}</td>
+          <td>R$ ${subtotal.toFixed(2)}</td>
+          <td>
+            <button class="btn btn-plus" onclick="mudarQtd(${idx}, 1)">+</button>
+            <button class="btn btn-minus" onclick="mudarQtd(${idx}, -1)">-</button>
+          </td>
+        </tr>`;
+      });
+
+      html += `</tbody></table>`;
+      area.innerHTML = html;
+      document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
+    }
+
+    function mudarQtd(index, delta) {
+      if (!carrinho[index]) return;
+      carrinho[index].quantidade += delta;
+      if (carrinho[index].quantidade <= 0) carrinho.splice(index, 1);
+      salvar();
+      render();
+    }
+
+    function limparCarrinho() {
+      if (!confirm("Deseja limpar todo o carrinho?")) return;
+      carrinho = [];
+      salvar();
+      render();
+    }
+
+    function finalizarCompra() {
+      if (carrinho.length === 0) { alert("Carrinho vazio."); return; }
+      // Aqui você pode integrar com checkout. Por enquanto:
+      alert("Compra finalizada! Obrigado.");
+      carrinho = [];
+      salvar();
+      render();
+    }
+
+    // renderizar ao abrir
+    render();
+  </script>
+</body>
+</html>

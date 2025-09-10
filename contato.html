@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - Perfumaria Ferrari</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8e7d7 0%, #eafaf1 100%);
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .card {
+            background: #fff;
+            max-width: 400px;
+            margin: 80px auto;
+            padding: 35px 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(44, 62, 80, 0.08);
+            text-align: center;
+        }
+        h1 {
+            color: #2ecc71;
+            font-size: 2em;
+            margin-bottom: 18px;
+        }
+        h4, h3 {
+            color: #333;
+            margin-bottom: 18px;
+        }
+        a.home-link {
+            color: #2ecc71;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-left: 8px;
+        }
+        .whatsapp-link {
+            display: inline-flex;
+            align-items: center;
+            background: #eafaf1;
+            border-radius: 8px;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #2ecc71;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(44, 62, 80, 0.07);
+            transition: background 0.2s;
+        }
+        .whatsapp-link:hover {
+            background: #d4f5e9;
+        }
+        .whatsapp-link img {
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .manutencao {
+            color: #e67e22;
+            font-size: 1.1em;
+            margin-bottom: 22px;
+        }
+        form {
+            text-align: left;
+        }
+        input, textarea {
+            width: 100%;
+            margin-bottom: 8px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background: #2ecc71;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Contato</h1>
+        <div class="manutencao"></div>
+       
+        <h3>
+            Meu WhatsApp
+            <a class="whatsapp-link" href="https://wa.me/73988353391" target="_blank" title="WhatsApp">
+                <span>Enviar mensagem</span>
+                <img src="./imagens/icons8-whatsapp.gif" width="25" height="25" alt="WhatsApp">
+            </a>
+        </h3>
+        <hr>
+        <h4>Outros meios de contato</h4>
+        <p><strong>E-mail:</strong> contato@perfumariaferrari.com</p>
+        <p><strong>Endereço:</strong> Rua das Flores, 123, Centro, Cidade/UF</p>
+        <p><strong>Horário de atendimento:</strong> Seg a Sex, 9h às 18h</p>
+        <hr>
+        <h4>Envie uma mensagem</h4>
+        <form action="https://formsubmit.co/nebuloushrad@gmail.com" method="POST">
+            <input type="text" name="nome" placeholder="Seu nome" required>
+            <input type="email" name="email" placeholder="Seu e-mail" required>
+            <textarea name="mensagem" placeholder="Sua mensagem" required></textarea>
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="obrigado.html">
+            <button type="submit">Enviar</button>
+        </form> 
+        <h4>
+            Voltar para a página inicial
+            <a class="home-link" href="./index.html" title="Página Inicial">🏠</a>
+        </h4>
+    </div>
+</body>
+</html>

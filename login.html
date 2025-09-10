@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfumaria Ferrari - Login / Cadastro</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(120deg, #f6f9fc, #e0f7fa);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .container {
+        background: #fff;
+        width: 380px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        padding: 30px;
+        text-align: center;
+    }
+    h2 {
+        color: #2ecc71;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+    }
+    button {
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        background: #2ecc71; /* laranja */
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.3s;
+        width: 100%;
+        margin-bottom: 12px;
+    }
+    button:hover {
+        background: #27ae60; /* mais escuro no hover */
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+    }
+    label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #333;
+        font-size: 0.95rem;
+    }
+    input[type="text"], input[type="email"], input[type="password"] {
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 0.95rem;
+        width: 100%;
+    }
+    .mensagem {
+        text-align: center;
+        color: red;
+        margin-bottom: 12px;
+        min-height: 18px;
+    }
+    #foto-display {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: block;
+        margin-bottom: 10px;
+        object-fit: cover;
+    }
+    .links-extra {
+        text-align: center;
+        margin-top: 8px;
+        font-size: 0.9rem;
+    }
+    .links-extra span {
+        color: #2ecc71;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 0 5px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="mensagem" id="mensagem"></div>
+
+    <!-- Login Form -->
+    <form id="form-login">
+        <h2>Login</h2>
+        <label for="usuario-login">Usuário</label>
+        <input type="text" id="usuario-login" placeholder="Digite seu usuário" required>
+
+        <label for="senha-login">Senha</label>
+        <input type="password" id="senha-login" placeholder="Senha" required>
+
+        <label>Foto do Usuário</label>
+        <img id="foto-display" src="imagens/avatar.png" alt="Foto do usuário">
+
+        <button type="submit">Entrar</button>
+        <div class="links-extra">
+            <span id="linkRedefinir">Esqueceu a senha?</span> | 
+            <span id="linkCadastrar">Cadastre-se</span>
+        </div>
+    </form>
+
+    <!-- Cadastro Form -->
+    <form id="form-cadastro" style="display:none;">
+        <h2>Cadastro</h2>
+        <label for="usuario-cad">Usuário</label>
+        <input type="text" id="usuario-cad" placeholder="Escolha um nome de usuário" required>
+
+        <label for="gmail-cad">Gmail</label>
+        <input type="email" id="gmail-cad" placeholder="Digite seu Gmail" required>
+
+        <label for="senha-cad">Senha</label>
+        <input type="password" id="senha-cad" placeholder="Crie uma senha" required>
+
+        <label for="foto-cad">Carregar Foto</label>
+        <input type="file" id="foto-cad" accept="image/*">
+
+        <button type="submit">Cadastrar</button>
+        <div class="links-extra">
+            <span id="linkVoltarLogin1">Já tem conta? Fazer login</span>
+        </div>
+    </form>
+
+    <!-- Redefinir Senha Form -->
+    <form id="form-redefinir" style="display:none;">
+        <h2>Redefinir Senha</h2>
+        <label for="usuario-reset">Usuário</label>
+        <input type="text" id="usuario-reset" placeholder="Digite seu usuário" required>
+
+        <label for="nova-senha">Nova Senha</label>
+        <input type="password" id="nova-senha" placeholder="Digite a nova senha" required>
+
+        <button type="submit">Atualizar Senha</button>
+        <div class="links-extra">
+            <span id="linkVoltarLogin2">Voltar ao Login</span>
+        </div>
+    </form>
+</div>
+
+<script>
+const linkCadastrar = document.getElementById('linkCadastrar');
+const linkRedefinir = document.getElementById('linkRedefinir');
+const linkVoltarLogin1 = document.getElementById('linkVoltarLogin1');
+const linkVoltarLogin2 = document.getElementById('linkVoltarLogin2');
+const formLogin = document.getElementById('form-login');
+const formCadastro = document.getElementById('form-cadastro');
+const formRedefinir = document.getElementById('form-redefinir');
+const mensagemEl = document.getElementById('mensagem');
+const fotoDisplay = document.getElementById('foto-display');
+
+// Mostrar cadastro
+linkCadastrar.addEventListener('click', () => {
+    formLogin.style.display = 'none';
+    formCadastro.style.display = 'block';
+    formRedefinir.style.display = 'none';
+    mensagemEl.textContent = '';
+});
+
+// Voltar para login do cadastro
+linkVoltarLogin1.addEventListener('click', () => {
+    formLogin.style.display = 'block';
+    formCadastro.style.display = 'none';
+    formRedefinir.style.display = 'none';
+    mensagemEl.textContent = '';
+});
+
+// Ir para redefinir senha
+linkRedefinir.addEventListener('click', () => {
+    formLogin.style.display = 'none';
+    formCadastro.style.display = 'none';
+    formRedefinir.style.display = 'block';
+    mensagemEl.textContent = '';
+});
+
+// Voltar para login da redefinição
+linkVoltarLogin2.addEventListener('click', () => {
+    formLogin.style.display = 'block';
+    formCadastro.style.display = 'none';
+    formRedefinir.style.display = 'none';
+    mensagemEl.textContent = '';
+});
+
+// Função utilitária para File -> base64
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject('Erro ao ler arquivo.');
+        reader.readAsDataURL(file);
+    });
+}
+
+// Atualizar foto ao digitar usuário no login
+document.getElementById('usuario-login').addEventListener('input', () => {
+    const usuarioInput = document.getElementById('usuario-login').value.trim();
+    const dadosUsuario = localStorage.getItem('usuario_' + usuarioInput);
+
+    if (dadosUsuario) {
+        const usuarioObj = JSON.parse(dadosUsuario);
+        fotoDisplay.src = usuarioObj.foto || 'imagens/avatar.png';
+    } else {
+        fotoDisplay.src = 'imagens/avatar.png';
+    }
+});
+
+// Login
+formLogin.addEventListener('submit', (e) => {
+    e.preventDefault();
+    mensagemEl.style.color = 'red';
+    mensagemEl.textContent = '';
+    const usuario = document.getElementById('usuario-login').value.trim();
+    const senha = document.getElementById('senha-login').value;
+
+    const dadosUsuario = JSON.parse(localStorage.getItem('usuario_' + usuario) || '{}');
+
+    if (dadosUsuario.nome === usuario && dadosUsuario.senha === senha) {
+        localStorage.setItem('usuario', JSON.stringify(dadosUsuario));
+        localStorage.setItem('usuarioLogado', 'true');
+        window.location.href = 'index.html';
+    } else {
+        mensagemEl.textContent = 'Usuário ou senha inválidos!';
+    }
+});
+
+// Cadastro
+formCadastro.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    mensagemEl.style.color = 'red';
+    mensagemEl.textContent = '';
+    const usuario = document.getElementById('usuario-cad').value.trim();
+    const gmail = document.getElementById('gmail-cad').value.trim();
+    const senha = document.getElementById('senha-cad').value;
+    const fotoFile = document.getElementById('foto-cad').files[0];
+
+    if (!usuario || !senha || !gmail) {
+        mensagemEl.textContent = 'Preencha todos os campos!';
+        return;
+    }
+
+    const foto = fotoFile ? await fileToBase64(fotoFile) : 'imagens/avatar.png';
+    const novoUsuario = { nome: usuario, gmail, senha, foto };
+    localStorage.setItem('usuario_' + usuario, JSON.stringify(novoUsuario));
+
+    mensagemEl.style.color = 'green';
+    mensagemEl.textContent = 'Cadastro realizado! Agora faça login.';
+    linkVoltarLogin1.click();
+});
+
+// Redefinir Senha
+formRedefinir.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const usuario = document.getElementById('usuario-reset').value.trim();
+    const novaSenha = document.getElementById('nova-senha').value;
+
+    const dadosUsuario = JSON.parse(localStorage.getItem('usuario_' + usuario) || '{}');
+
+    if (dadosUsuario.nome === usuario) {
+        dadosUsuario.senha = novaSenha;
+        localStorage.setItem('usuario_' + usuario, JSON.stringify(dadosUsuario));
+        mensagemEl.style.color = 'green';
+        mensagemEl.textContent = 'Senha atualizada com sucesso!';
+        linkVoltarLogin2.click();
+    } else {
+        mensagemEl.style.color = 'red';
+        mensagemEl.textContent = 'Usuário não encontrado!';
+    }
+});
+</script>
+
+</body>
+</html>
